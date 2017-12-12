@@ -145,3 +145,82 @@ public List<Forum> getForums(final int fromId, final int toId) {
 
 }
 ```
+
+### 六、BLOB/CLOB类型数据操作
+
+#### 1.相关的操作接口
+
+(1) LobCreator
+
+用于创建Lob类型。可以直接在`JdbcTemplate.execute(String sql,AbstractLobCreatingPreparedStatementCallback lcpsc)`中使用
+
+(2) LobHandler
+
+此接口为操作大二进制字段和大文本字段提供了统一访问接口。一般作为类中的域来声明。
+
+#### 2.插入LOB类型的数据
+
+```java
+public void addLob(final String bigText, final int id) {
+    jdbcTemplate.execute(addLobSql, new AbstractLobCreatingPreparedStatementCallback(this.lobHandler) {//lobHandler在类中声明
+        @Override
+        protected void setValues(PreparedStatement preparedStatement, LobCreator lobCreator) throws SQLException, DataAccessException {
+            //设置CLOB字段
+            lobCreator.setClobAsString(preparedStatement, 1, bigText);
+            preparedStatement.setInt(2, id);
+        }
+    });
+}
+```
+
+Spring配置文件：
+
+```xml
+<bean id="lobHandler"
+      class="org.springframework.jdbc.support.lob.DefaultLobHandler"
+      lazy-init="true"/>  
+```
+
+#### 3.块数据方式读取LOB数据
+
+以String读取CLOB字段的数据，以byte[]读取BLOB字段的数据
+
+```java
+//块数据方式读取LOB数据
+//以String读取CLOB字段的数据，以byte[]读取BLOB字段的数据
+public List getLobByBlock(final int userId) {
+    return jdbcTemplate.query(getLobBlockSql, new Object[]{userId},
+            new RowMapper<Tuser>() {
+                public Tuser mapRow(ResultSet resultSet, int i) throws SQLException {
+                    String c = lobHandler.getClobAsString(resultSet, 1);
+                    //byte[] b = lobHandler.getBlobAsBytes(resultSet, 1);
+                    Tuser tuser = new Tuser();
+                    //tuser.setClob(b);
+                    tuser.setClob(c);
+                    return null;
+                }
+            });
+}
+```
+
+#### 4.流数据方式读取LOB数据
+
+Lob数据体积过大时(如100MB以上)。JdbcTemplate提供了一个`query(String sql, Object[] args, ResultSetExtractor rse)`方法。
+
+```java
+//流数据方式读取LOB数据
+public void getLobByStream(final int userId, final OutputStream os) {
+    jdbcTemplate.query(getLobStreamSql, new Object[]{userId},
+            new AbstractLobStreamingResultSetExtractor() {
+                protected void handleNoRowFound() throws LobRetrievalFailureException {
+                    System.out.println("Not Found result");
+                }
+                public void streamData(ResultSet rs) throws SQLException, IOException {
+                    InputStream is = lobHandler.getBlobAsBinaryStream(rs, 1);
+                    if(is != null) {
+                        FileCopyUtils.copy(is, os);
+                    }
+                }
+            });
+}
+```
