@@ -1,5 +1,7 @@
 # 使用Spring JDBC
 
+---
+
 ### 一、几个重要的类
 
 1. JdbcTemplate、
@@ -26,6 +28,8 @@ void processRow(ResultSet rs) throws SQLException
 T mapRow(ResultSet rs, int rowNum)
 ```
 
+---
+
 ### 二、Spring配置文件的编写
 
 1. 定义DataSource
@@ -46,6 +50,8 @@ T mapRow(ResultSet rs, int rowNum)
       p:dataSource-ref="dataSource"/>
 ```
 
+---
+
 ### 三、更改数据
 
 JdbcTemplate提供了若干个`update()`方法，允许对数据表进行更改和删除操作。
@@ -65,6 +71,8 @@ public int returnKeyHolederInsert(final String username, final String password) 
     return keyHolder.getKey().intValue();
 }
 ```
+
+---
 
 ### 四、批量操作
 
@@ -90,6 +98,8 @@ public void addForums(final List<Forum> forums) {
   });
 }
 ```
+
+___
 
 ### 五、查询数据
 使用RowCallbackHandler或者RowMapper
@@ -145,6 +155,8 @@ public List<Forum> getForums(final int fromId, final int toId) {
 
 }
 ```
+
+***
 
 ### 六、BLOB/CLOB类型数据操作
 
