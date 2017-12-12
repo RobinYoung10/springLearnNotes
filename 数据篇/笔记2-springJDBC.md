@@ -2,13 +2,16 @@
 
 ### 一、几个重要的类
 
-1. JdbcTemplate
+1. JdbcTemplate、
+
 JdbcTemplate用于完成数据访问操作
 
 2. KeyHolder
+
 org.springframework.support.KeyHolder是一个回调接口，Spring使用它来保存新增记录对应的主键。
 
 3. RowCallbackHandler
+
 也是一个回调接口，通过该接口可以定义如何从结果集中获取数据。仅有一个方法：
 
 ```java
@@ -16,6 +19,7 @@ void processRow(ResultSet rs) throws SQLException
 ```
 
 4. RowMapper<T>
+
 该接口定义结果集映射逻辑。在结果集为多行记录时，该接口跟容易使用。仅有一个接口方法：
 
 ```java
