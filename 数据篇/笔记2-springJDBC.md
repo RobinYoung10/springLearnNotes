@@ -236,3 +236,82 @@ public void getLobByStream(final int userId, final OutputStream os) {
             });
 }
 ```
+
+### 七、自增键的使用
+
+Spring允许用户在应用层产生主键值，为此定义了`org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer`接口，提供两种产生主键的方案：
+
+* 1.通过序列产生主键；
+
+* 2.通过表产生主键；
+
+DataFieldMaxValueIncrementer接口定义了3个获取下一个主键的方法：
+
+* 1.`int nextIntValue()`：获取下一个主键值，类型为`int`。
+
+* 2.`long nextLongValue()`：获取下一个主键值，类型为`long`。
+
+* 3.`String nextStringValue()`：获取下一个主键值，类型为`String`。
+
+实例：
+```java
+private DataFieldMaxValueIncrementer incre;
+
+@Autowired
+public void setIncre(DataFieldMaxValueIncrementer incre) {
+    this.incre = incre;
+}
+
+public void insert(final String username, final String password) {
+    jdbcTemplate.update(insertIncreSql, new PreparedStatementSetter() {
+        public void setValues(PreparedStatement preparedStatement) throws SQLException {
+            preparedStatement.setInt(1, incre.nextIntValue());//获取下一个主键值
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, username);
+        }
+    });
+}
+```
+
+#### 1.以序列方式产生主键值
+
+在Oracle数据库中创建一个序列，为表提供主键。
+
+```sql
+create sequence seq_forum_id
+increment by 1
+start with 1;
+```
+
+在Spring配置如下：
+
+```xml
+<bean id="incre"
+     class="org.springframework.jdbc.support.incrementer.OracleSequenceMaxValueIncrementer"
+     p:incrementerName="seq_post_id"
+     p:dataSource-ref="dataSource"/>
+```
+
+#### 2.以表方式产生主键值
+
+在MySQL数据库中创建一张维护主键的表，并插入一个初始数据。
+
+```sql
+create table t_post_id
+(
+   sequence_id  int
+)
+engine = MYISAM;
+ insert into t_post_id values(0);
+```
+
+在Spring配置如下：
+
+```xml
+<bean id="incre"
+      class="org.springframework.jdbc.support.incrementer.MySQLMaxValueIncrementer"
+      p:incrementerName="t_user_incre"
+      p:columnName="sequence_id"
+      p:cacheSize="10"
+      p:dataSource-ref="dataSource"/>
+```
