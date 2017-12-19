@@ -109,6 +109,8 @@ public String register(
 }
 ```
 
+---
+
 ### 4.`@PathVariable`注解
 
 使用这个注解可以方便的获取请求URL中的动态参数（请求的path）。
@@ -122,13 +124,19 @@ public String loginForm(@PathVariable String formName) {
 }
 ```
 
+---
+
 ### 5.`@RequestHeader`注解
 
 将请求的头信息映射到处理方法的参数上。
 
+---
+
 ### 6.`@CookieValue`注解
 
 将请求的Cookie映射到处理方法的参数上。
+
+---
 
 ### 7.`@SessionAttributes`注解
 
@@ -146,6 +154,8 @@ public class UserController {
     ...
 }
 ```
+
+---
 
 ### 8.`@ModelAttribute`注解
 
