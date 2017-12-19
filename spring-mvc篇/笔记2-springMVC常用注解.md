@@ -46,10 +46,10 @@
 
 #### 请求处理方法可出现的参数类型
 
-![](https://gitee.com/robin10/Springlearnnotes/blob/master/spring-mvc%E7%AF%87/image/1.png)
+![](https://gitee.com/robin10/Springlearnnotes/raw/master/spring-mvc%E7%AF%87/image/1.png)
 
-![](image/2.png)
+![](https://gitee.com/robin10/Springlearnnotes/raw/master/spring-mvc%E7%AF%87/image/2.png)
 
 #### 请求处理方法可返回的类型
 
-![](image/3.png)
+![](https://gitee.com/robin10/Springlearnnotes/raw/master/spring-mvc%E7%AF%87/image/3.png)
