@@ -88,12 +88,12 @@ public ModelAndView hello() {
 
 ### 3.`@RequestParam`注解
 
-| 属性 | 类型 | 说明 |
-|:----|:----|:-----|
-| name | String | 指定请求头绑定的名称 |
-| value | String | name属性的别名 |
-| required | boolean | 指定参数是否必须绑定 |
-| defaultValue | String | 如果没有传递参数而使用的默认值 |
+| 属性         | 类型    | 说明                           |
+|:-------------|:--------|:-------------------------------|
+| name         | String  | 指定请求头绑定的名称           |
+| value        | String  | name属性的别名                 |
+| required     | boolean | 指定参数是否必须绑定           |
+| defaultValue | String  | 如果没有传递参数而使用的默认值 |
 
 例子：
 
