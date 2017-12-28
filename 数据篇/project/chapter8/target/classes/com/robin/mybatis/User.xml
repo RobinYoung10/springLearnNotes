@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.robin.mybatis.User">
+    <!--type属性表示实际返回的类型-->
+    <resultMap id="userResultMap" type="com.robin.mybatis.User" >
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="age" column="age" />
+    </resultMap>
+    <!--resultMap="userResultMap"表示引用上面的resultMap进行数据表和返回类型对象的映射-->
+    <!--实际返回的类型就是resultMap的type-->
+    <select id="selectUser" resultMap="userResultMap">
+        SELECT * FROM tb_user
+    </select>
+</mapper>

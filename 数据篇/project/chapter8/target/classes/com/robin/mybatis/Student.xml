@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.robin.mybatis.StudentMapper">
+    <resultMap id="studentResultMap" type="com.robin.mybatis.Student">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="sex" column="sex" />
+        <result property="age" column="age" />
+        <!--关联映射-->
+        <association property="clazz" column="clazz_id" javaType="com.robin.mybatis.Clazz" select="selectClazzWithId" />
+    </resultMap>
+    <select id="selectClazzWithId" resultType="com.robin.mybatis.Clazz">
+        SELECT * FROM tb_clazz where id = #{id}
+    </select>
+    <select id="selectStudent" resultMap="studentResultMap">
+        SELECT * FROM tb_student
+    </select>
+</mapper>
